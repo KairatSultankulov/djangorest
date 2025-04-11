@@ -2,13 +2,15 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Category, Product, Review
-from .serializers import CategorySerializer, ProductSerializer, ReviewSerializer
+from .serializers import CategorySerializer, ProductSerializer, ReviewSerializer, ProductWithReviewsSerializer, CategoryWithCountSerializer
+from django.db.models import Count
+
 
 
 @api_view(['GET'])
-def category_list_api_view(request):
-    categories = Category.objects.all()
-    data = CategorySerializer(categories, many=True).data
+def category_with_count_api_view(request):
+    categories = Category.objects.annotate(product_count=Count('product'))
+    data = CategoryWithCountSerializer(categories, many=True).data
     return Response(data=data)
 
 @api_view(['GET'])
@@ -50,4 +52,18 @@ def review_detail_api_view(request, id):
     except Review.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND, data={'error': 'Review does not exist!'})
     data = ReviewSerializer(review).data
+    return Response(data=data)
+
+@api_view(['GET'])
+def product_with_reviews_api_view(request):
+    products = Product.objects.all()
+    data = ProductWithReviewsSerializer(products, many=True).data
+    return Response(data=data)
+
+
+
+@api_view(['GET'])
+def category_with_count_api_view(request):
+    categories = Category.objects.annotate(products_count=Count('products'))
+    data = CategoryWithCountSerializer(categories, many=True).data
     return Response(data=data)
