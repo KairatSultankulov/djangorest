@@ -66,3 +66,4 @@ class ReviewValidateSerializer(serializers.Serializer):
             return Product.objects.get(id=product_id)
         except Product.DoesNotExist:
             raise ValidationError('Product does not exist')
+
