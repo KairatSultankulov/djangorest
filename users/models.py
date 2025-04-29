@@ -3,7 +3,7 @@ from django.forms import IntegerField
 
 
 class SMSCode(models.Model):
-    code = models.CharField(max_length=10)
+    code = models.CharField(max_length=20)
     user = models.OneToOneField('auth.User', on_delete=models.CASCADE, related_name='sms_code')
     created_at = models.DateTimeField(auto_now_add=True)
 

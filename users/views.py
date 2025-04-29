@@ -22,7 +22,7 @@ class RegisterView(APIView):
             password=serializer.validated_data.get('password'),
             is_active=False
         )
-        code = ''.join([str(random.randint(0, 9) for i in range(6))])
+        code = ''.join(str(random.randint(0, 9)) for _ in range(6))
         models.SMSCode.objects.create(code=code, user=user)
         send_mail(
             'Registration code',
