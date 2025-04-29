@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'product',
     'users',
     'rest_framework.authtoken',
+    'drf_yasg',
 
 ]
 
